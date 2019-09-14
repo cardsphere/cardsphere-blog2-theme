@@ -1,16 +1,14 @@
 {
-    "name": "casper",
-    "description": "The default personal blogging theme for Ghost. Beautiful, minimal and responsive.",
-    "demo": "https://demo.ghost.io",
-    "version": "2.11.1",
+    "name": "cardsphere",
+    "description": "Cardsphere specific theme based on Casper for Ghost 2.x",
+    "version": "1.0.0",
     "engines": {
-        "ghost": ">=2.0.0",
         "ghost-api": "v2"
     },
     "license": "MIT",
-    "screenshots": {
-        "desktop": "assets/screenshot-desktop.jpg",
-        "mobile": "assets/screenshot-mobile.jpg"
+    "author": {
+        "name": "Michael Baranov",
+        "email": "michael@cardsphere.com"
     },
     "scripts": {
         "dev": "gulp",
@@ -20,11 +18,6 @@
         "preship": "yarn test",
         "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn version && git push --follow-tags; else echo \"Uncomitted changes found.\" && exit 1; fi",
         "postship": "git fetch && gulp release"
-    },
-    "author": {
-        "name": "Ghost Foundation",
-        "email": "hello@ghost.org",
-        "url": "https://ghost.org"
     },
     "gpm": {
         "type": "theme",
