@@ -32,7 +32,7 @@ production stylesheet in assets/built/screen.css
 @import "global.css";
 
 body {
-    background: #f4f8fb;
+    background: var(--cs-white);
 }
 
 .img {
@@ -91,6 +91,7 @@ body {
 /* 3. Special Template Styles
 /* ---------------------------------------------------------- */
 
+/*
 @media (min-width: 900px) {
     .home-template .post-feed,
     .tag-template .post-feed,
@@ -103,6 +104,7 @@ body {
         top: -70px;
     }
 }
+*/
 
 
 /* 4. Site Header
@@ -113,7 +115,7 @@ body {
     padding-top: 12px;
     padding-bottom: 12px;
     color: #fff;
-    background: color(var(--darkgrey) l(-5%)) no-repeat center center;
+    background: color(var(--cs-dark-blue)) no-repeat center center;
     background-size: cover;
 }
 
@@ -152,8 +154,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10vw 4vw;
-    min-height: 200px;
     max-height: 450px;
     text-align: center;
 }
@@ -164,6 +164,7 @@ body {
     padding: 0;
     font-size: 3.8rem;
     font-weight: 700;
+    min-width: 50px;
 }
 
 .site-logo {
@@ -230,7 +231,7 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     flex-shrink: 0;
     display: block;
     margin-right: 24px;
-    padding: 11px 0;
+    padding: 0;
     color: #fff;
     font-size: 1.7rem;
     line-height: 1em;
@@ -245,7 +246,7 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
 .site-nav-logo img {
     display: block;
     width: auto;
-    height: 21px;
+    height: 32px;
 }
 
 .nav {
@@ -267,7 +268,6 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     margin: 0;
     padding: 10px 12px;
     color: #fff;
-    opacity: 0.8;
 }
 
 .nav li a:hover {
@@ -696,7 +696,7 @@ make sure this only happens on large viewports / desktop-ish devices.
 }
 
 .post-full-meta-date {
-    color: var(--blue);
+    color: var(--cs-blue);
 }
 
 .post-full-title {
@@ -1506,7 +1506,8 @@ Usage (In Ghost editor):
     margin: 0 20px 40px;
     padding: 25px;
     color: #fff;
-    background: var(--darkgrey) center center;
+    background: var(--cs-dark-blue) center center;
+    background-image: none !important; /* hide blog-cover.jpg*/
     background-size: cover;
     border-radius: 5px;
     box-shadow: rgba(39,44,49,0.06) 8px 14px 38px, rgba(39, 44, 49, 0.03) 1px 3px 8px;
@@ -2355,19 +2356,14 @@ Usage (In Ghost editor):
 
 .site-footer {
     position: relative;
-    padding-top: 20px;
-    padding-bottom: 60px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     color: #fff;
-    background: color(var(--darkgrey) l(-15%));
+    background: var(--cs-dark-grey);
 }
 
 .site-footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    color: rgba(255,255,255,0.7);
-    font-size: 1.3rem;
+    color: var(--cs-light-grey);
 }
 
 .site-footer-content a {
@@ -2380,11 +2376,13 @@ Usage (In Ghost editor):
 }
 
 .site-footer-nav {
-    display: flex;
 }
 
 .site-footer-nav a {
     position: relative;
+}
+
+.site-footer-nav a:not(:first-child) {
     margin-left: 20px;
 }
 
@@ -2411,4 +2409,14 @@ Usage (In Ghost editor):
     .site-footer-nav a:first-child {
         margin-left: 0;
     }
+}
+
+.site-footer-copyright {
+    font-size: 0.8em;
+}
+
+.site-footer-disclaimer {
+    font-size: 0.8em;
+    color: #aaa;
+    line-height: normal;
 }
