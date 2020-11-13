@@ -18,6 +18,7 @@ window.jQuery(function ($) {
         var main = [];
         var side = [];
         var sublist = main;
+        var hasUnresolved = false;
         $.each(lines, function (i, line) {
             line = line.trim();
             var m = /\s*(\d+) (.*)/g.exec(line);
@@ -28,12 +29,20 @@ window.jQuery(function ($) {
                         quantity: m[1],
                         resolved: c
                     });
+                } else {
+                    hasUnresolved = true;
                 }
             } else if (main.length > 0 && line == "") {
                 // switch to filling SB
                 sublist = side;
             }
         });
+
+        if(hasUnresolved) {
+            replaceDeckSimple(el, text, resolved);
+            return;
+        }
+
         // broup by type
         var typeGroups = main.reduce(function (r, a) {
             var key = a.resolved.types[a.resolved.types.length - 1]; // last type
@@ -89,6 +98,70 @@ window.jQuery(function ($) {
         });
         $(el).replaceWith($p);
     };
+    var replaceDeckSimple = function (el, text, resolved) {
+        var lines = text.split("\n");
+        var main = [];
+        var side = [];
+        var sublist = main;
+        $.each(lines, function (i, line) {
+            line = line.trim();
+            var m = /\s*(\d+) (.*)/g.exec(line);
+            if (m) {
+                var cardName = m[2].trim();
+                var c = resolved[cardName];
+                if (c) {
+                    sublist.push({
+                        quantity: m[1],
+                        resolved: c
+                    });
+                } else {
+                    sublist.push({
+                        quantity: m[1],
+                        unresolved: cardName
+                    });
+                }
+            } else if (main.length > 0 && line == "") {
+                // switch to filling SB
+                sublist = side;
+            }
+        });
+
+        var $p = $('<p/>', { class: 'decklist' })
+        var $main = $('<ul/>', { class: 'decklist-mainboard' }).appendTo($p);
+        var $side = $('<ul/>', { class: 'decklist-sideboard' }).appendTo($p);
+
+
+        $.each(main, function (i, item) {
+            var $li = $('<li>', { class: 'decklist-card' }).append([
+                $('<span/>', { class: 'decklist-card-quantity' }).text(item.quantity + 'x '),
+                (item.resolved)
+                ?$('<a/>', {
+                    href: item.resolved.url,
+                    class: 'decklist-card-link cardpeek',
+                    'data-image': item.resolved.image,
+                }).text(item.resolved.name)
+                :$('<span/>', {
+                    class: 'decklist-card-link',
+                }).text(item.unresolved)
+            ]).appendTo($main);
+        });
+        $.each(side, function (i, item) {
+            var $li = $('<li>', { class: 'decklist-card' }).append([
+                $('<span/>', { class: 'decklist-card-quantity' }).text(item.quantity + 'x '),
+                (item.resolved)
+                ?$('<a/>', {
+                    href: item.resolved.url,
+                    class: 'decklist-card-link cardpeek',
+                    'data-image': item.resolved.image,
+                }).text(item.resolved.name)
+                :$('<span/>', {
+                    class: 'decklist-card-link',
+                }).text(item.unresolved)
+            ]).appendTo($side);
+        });
+
+        $(el).replaceWith($p);
+    };
     var replaceCard = function (el, resolved) {
         var c = resolved[el.textContent.trim()];
         if (c) {
@@ -97,6 +170,8 @@ window.jQuery(function ($) {
                 class: 'cardpeek',
                 'data-image': c.image,
             }).text(c.name));
+        } else {
+            $(el).replaceWith($('<span/>', {}).text(el.textContent));
         }
     };
 
